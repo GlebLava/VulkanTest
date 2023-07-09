@@ -1,0 +1,19 @@
+Vulkan steps with GLFW:
+
+1. init GLFW window
+2. create Vulkan instance
+3. get physical device and create and its queue family index?
+4. create Vulkan Surface with GLFW window
+5. create graphics queues?
+6. create vulkan device from physical device
+7. create graphics command pool
+8. create swap chain and retrieve swap chain images
+9. create Vulkan imgae views for swap chain images
+10. create render pass
+11. create graphics pipeline
+12. create framebuffers for swap chain images
+13. create vertex and index buffers for triangle
+14. create desciptor layout and descriptor pool
+15. create descriptor set and update set bindings 
+16. create command buffers for recording of drawing commands?
+17. implement main rendering loop
