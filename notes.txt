@@ -1,19 +1,112 @@
+Ray Tracing example: https://github.com/SaschaWillems/Vulkan/blob/master/examples/computeraytracing/computeraytracing.cpp
+
+
+
 Vulkan steps with GLFW:
 
-1. init GLFW window
-2. create Vulkan instance
-3. get physical device and create and its queue family index?
-4. create Vulkan Surface with GLFW window
-5. create graphics queues?
-6. create vulkan device from physical device
-7. create graphics command pool
-8. create swap chain and retrieve swap chain images
-9. create Vulkan imgae views for swap chain images
-10. create render pass
-11. create graphics pipeline
-12. create framebuffers for swap chain images
-13. create vertex and index buffers for triangle
-14. create desciptor layout and descriptor pool
-15. create descriptor set and update set bindings 
-16. create command buffers for recording of drawing commands?
-17. implement main rendering loop
+glfw init needs to be called before anything
+
+
+create an Vulkan Instance:
+Here is where we create our VulkanInstance. This is more or less the a context in openGL. This instance gives us all further means
+and access to Vulkan as a library or program.
+
+create a Surface:
+Here we first need to create a window using any prefered way f.e. glfw. 
+This window will act as a surface for vulkan so the connection there needs to be created as well.
+(glfwCreateWindowSurface)
+
+pick a physical device:
+Physical devices are the actual GPUs. These need to be queried for their capabilities and supported features.
+One can query them using vkEnumeratePhysicalDevices. The result is an array of VkPhysicalDevice. 
+One of these is then to be picked to create a logical device from
+
+create a logical device:
+To be able to communicate with the picked physical device, a "logical" device needs to be created which is a VkDevice.
+This VkDevice needs to be created with a DeviceQueue. 
+What is a DeviceQueue?
+Almost every operation in Vulkan, anything from drawing to uploading textures, requires commands to be submitted to a queue.
+There are different types of queues that originate from different queue families and each family allows only a subset of command.
+It needs to be checked which queue families are supported by the device for our desires.  
+
+If the device supports all wanted queueFamilies, we need to pass the index of the wanted to queues inside of a array of VkDeviceQueueCreateInfo
+to our VkDeviceCreateInfo. This also takes a VkPhysicalDeviceFeatures which can enable some specific device features? (Idk not used).
+This VkDeviceCreateInfo is used to create the logical device.
+
+It can be, depending on the requirements that a single queue can fullfill multiple requirements at once. So there only needs to be one
+queue to the device. This is important to understand. 
+For example for RayTracing I want a graphics, compute and present queue. It is possible that my device has one queue that can fullfill
+all these roles, so at the end we need to only create one queue. 
+
+
+
+
+create the swap chain:
+Vulkan does not have the concept of a "default framebuffer", hence it requires an infrastructure that will own the buffers we will
+render to before we visualize them on the screen. This infrastructure is known as the swap chain and must be created explicitly in Vulkan.
+The swap chain is essentially a queue of images that are waiting to be presented to the screen. Our application will acquire such an 
+image to draw to it, and then return it to the queue. How exactly the queue works and the conditions for presenting an image from the 
+queue depend on how the swap chain is set up, but the general purpose of the swap chain is to synchronize the presentation of images with 
+the refresh rate of the screen
+
+Of course the device needs to support a swap chain. Also the swap chain is one of the device extensions, so it needs to be enabled 
+in the creation of the logical device.
+More details need to be queried as well:
+-Basic surface capabilities (min/max number of images in swap chain, min/max width and height of images)
+-Surface formats (pixel format, color space)
+-Available presentation modes
+Afterwards the right swap chain needs to be specified and created.
+From this swap chain we get the swap chain images.
+
+create the image views:
+To use any VkImage, including those in the swap chain, in the render pipeline we have to create a VkImageView object. 
+An image view is quite literally a view into an image. It describes how to access the image and which part of the image to 
+access, for example if it should be treated as a 2D texture depth texture without any mipmapping levels
+
+for each swap chain image, a swap chain image view needs to be created. 
+
+
+create the render pass: https://www.youtube.com/watch?v=x2SGVjlVGhE
+Here colorAttachments, subpasses and dependencies need to be configured to create the render pass. 
+The renderpass is somewhat of a high-level description of a sequence of rendering operations. 
+It defines attachments (like color and depth or stencil buffers) that will be used during rendering. 
+A renderpass consists of one or more subpasses. Each subpass represents a distinct phase of the rendering process (color rendering, depth testing, etc)
+Subpasses can read from and write to these attachments definded. 
+The dependencies describe the ordering and synchronization between subpasses.
+
+
+create the graphics pipeline:
+Here we load in our shaders and define the layout of our graphics pipeline.
+
+create the framebuffers:
+Framebuffers bind our attachments (see create the render pass) that serve as the render targets for a specific render pass instance.
+These are created based on the render pass definition and contain the attachments required for rendering. 
+
+creating command pool and command buffers:
+Commands in Vulkan, like drawing operations and memory transfers, are not executed directly using function calls. 
+You have to record all of the operations you want to perform in command buffer objects. The advantage of this is that when we 
+are ready to tell the Vulkan what we want to do, all of the commands are submitted together and Vulkan can more efficiently process 
+the commands since all of them are available together. In addition, this allows command recording to happen in multiple threads if 
+so desired
+
+command pools manage the memory that is used to store the buffers and command buffers are allocated from them.
+Command buffers are executed by submitting them on one of the device queues. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

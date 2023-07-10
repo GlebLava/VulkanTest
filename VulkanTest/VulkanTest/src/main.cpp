@@ -55,6 +55,7 @@ void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT
     {
         func(instance, debugMessenger, pAllocator);
     }
+
 }
 
 struct QueueFamilyIndices
@@ -421,7 +422,7 @@ private:
         {
             createInfo.enabledLayerCount = 0;
         }
-
+        
         if (vkCreateDevice(physicalDevice, &createInfo, nullptr, &device) != VK_SUCCESS)
         {
             throw std::runtime_error("failed to create logical device!");
@@ -1168,7 +1169,7 @@ private:
     }
 };
 
-int main()
+int main2()
 {
     HelloTriangleApplication app;
 
