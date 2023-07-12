@@ -1,5 +1,5 @@
 Ray Tracing example: https://github.com/SaschaWillems/Vulkan/blob/master/examples/computeraytracing/computeraytracing.cpp
-
+Fast Compute Shader example: https://bakedbits.dev/posts/vulkan-compute-example/
 
 
 Vulkan steps with GLFW:
