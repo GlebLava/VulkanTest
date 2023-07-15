@@ -32,6 +32,14 @@ static std::vector<char> readFile(const std::string& filename)
 }
 
 
+static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData)
+{
+	std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
+
+	return VK_FALSE;
+}
+
+
 int main()
 {
 	/*
@@ -57,6 +65,9 @@ int main()
 
 
 	// Extensions
+	const std::vector<const char*> enabledLayers = { "VK_LAYER_KHRONOS_validation" };
+
+
 	uint32_t glfwExtensionCount = 0;
 	const char** glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
 	std::vector<const char*> extensions(glfwExtensions, glfwExtensions + glfwExtensionCount);
@@ -65,6 +76,15 @@ int main()
 	instanceCreateInfo.pApplicationInfo = &appInfo;
 	instanceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
 	instanceCreateInfo.ppEnabledExtensionNames = extensions.data();
+	instanceCreateInfo.enabledLayerCount = static_cast<uint32_t>(enabledLayers.size());
+	instanceCreateInfo.ppEnabledLayerNames = enabledLayers.data();
+
+	VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
+	debugCreateInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+	debugCreateInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+	debugCreateInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+	debugCreateInfo.pfnUserCallback = debugCallback;
+	instanceCreateInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*)&debugCreateInfo;
 
 	vk::Instance vkInstance = vk::createInstance(instanceCreateInfo);
 

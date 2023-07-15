@@ -93,6 +93,64 @@ command pools manage the memory that is used to store the buffers and command bu
 Command buffers are executed by submitting them on one of the device queues. 
 
 
+#########################--Stuff--########################################
+Resources and Descriptors:
+
+Four fundamentally different types of resources: Buffers, Images, Samplers, Acceleration structures
+Descriptors describe where to find a resource and how to access it (usage type, offsets, meta data)
+
+Buffer types:
+uniform buffer: (read/"load" only per draw call. That a uniform can not be changed during the draw call)
+
+storage buffers: (read and write/"load and store")
+
+texel buffers: (as uniform or storage) 
+Here multiple values can be formed into one texel. 
+Write and read operations of one texel are then atomic. (For example: 3floats can be formed into one texel)
+
+dynamic buffers: (as uniform or storage)
+
+Image types:
+storage image: (can be written and read from using pixel coords)
+
+sampled image: (can be written and read from but using normalised coords in the range from 0-1)
+
+input attachment image: (read/"load" only)
+can only be used within the renderpass and is framebuffer local only. That mean that the shader only
+has access to ONE coordinate and not the neighbouring ones.
+
+
+Image are (almost) always used through an image view. 
+An image view is a wrapper around a vk::Image instance. 
+An imageview is created with a subresourceRange. This is used if an imageView only can use a part or a layer
+of an image. So multiple ImageViews can be created from one image, all used to access different part of the image.
+
+
+- One descriptor describes exactly one resource
+- Descriptors are always organized in descriptor sets
+	Each set contains one or multiple descriptors which are used conjunction.
+- Multiple descriptor sets can be used
+
+- !Important! Descriptor sets are always bound do an Command Buffer
+
+
+#########################--Workflow rewritten--###################################
+INIT:
+1. pick a physical device. 
+2. create a logical device, with the appropiate queues.
+3. Create a swapchain from the following modes (immeadiate, FIFO, FIFO relaxed, Mailbox) with a surface.
+4. pick imageformats and create images.
+5. create imageframes for each image.
+	imageframe contains:
+	- image created before?
+	- imageview
+	- buffer
+	- fence
+	- semaphore for when image is available
+ 	- semaphore for when image is finished being rendered to screen?
+	- Descriptors, Descriprotsets, WriteDescriptorsets of Image 
+6. create the pipeline
+
 
 
 
