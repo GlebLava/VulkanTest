@@ -1,4 +1,4 @@
-Ray Tracing example: https://github.com/SaschaWillems/Vulkan/blob/master/examples/computeraytracing/computeraytracing.cpp
+öRay Tracing example: https://github.com/SaschaWillems/Vulkan/blob/master/examples/computeraytracing/computeraytracing.cpp
 Fast Compute Shader example: https://bakedbits.dev/posts/vulkan-compute-example/
 
 
@@ -94,7 +94,7 @@ Command buffers are executed by submitting them on one of the device queues.
 
 
 #########################--Stuff--########################################
-Resources and Descriptors:
+####### Resources and Descriptors:
 
 Four fundamentally different types of resources: Buffers, Images, Samplers, Acceleration structures
 Descriptors describe where to find a resource and how to access it (usage type, offsets, meta data)
@@ -134,6 +134,42 @@ of an image. So multiple ImageViews can be created from one image, all used to a
 - !Important! Descriptor sets are always bound do an Command Buffer
 
 
+
+################# Commands and Command Buffers:
+Commands are sent to the gpu over command buffers and not independenlty.
+A command buffer needs to be bound to a command pool.
+
+What is a command?
+Commands are from different groups.
+Action type commands and State type commands.
+They are predefined. Take f.e. vkCmdDraw or vkCmdClearAttachments.
+
+Commands are bound to descriptor sets. The descriptor sets "describe" which resources the command acts upon.
+
+
+Every Command Buffer is created from a commandpool. A command pool must be created for a certain queue family. 
+Afterswards a command buffer needs to be allocated from this command pool. 
+
+In the render loop or whatever the commandBuffer then needs to be submitted with vk::QueueSubmit to the device for processing.
+Thta where snchronization comes in, because submitting a command on the cpu side, does not wait for the command to finish on the gpu.
+Code on the cpu will continue if synchronization is not used.
+
+NOTE: It is normal to NOT reuse command buffers. They are typically allocated every render iteration from a new. The command pool should be 
+reused tho. 
+There are three command buffer usage modes: reuse (command buffer only allocated once), single use (command buffer allocated anew every time), reset and re-record
+
+How can data be actually provided to commands?:
+1. Descriptors establish links to resources
+2. Push constants are a very small amount of data that can be stored along side with the commands directly in the command buffer (max 128 Bytes)
+   (see Vulkan series 4 28:40)
+3. Parameters of the actual commands (depends on the command)
+4. Attributes (Graphics pipelines only)
+   These are streamed to vertex shaders and are acessible via input location.  
+   (see Vulkan series 4 30:45)
+
+
+
+
 #########################--Workflow rewritten--###################################
 INIT:
 1. pick a physical device. 
@@ -150,10 +186,6 @@ INIT:
  	- semaphore for when image is finished being rendered to screen?
 	- Descriptors, Descriprotsets, WriteDescriptorsets of Image 
 6. create the pipeline
-
-
-
-
 
 
 
