@@ -141,7 +141,7 @@ A command buffer needs to be bound to a command pool.
 
 What is a command?
 Commands are from different groups.
-Action type commands and State type commands.
+Action type commands, State type commands and Synchronization Commands
 They are predefined. Take f.e. vkCmdDraw or vkCmdClearAttachments.
 
 Commands are bound to descriptor sets. The descriptor sets "describe" which resources the command acts upon.
@@ -168,16 +168,88 @@ How can data be actually provided to commands?:
    (see Vulkan series 4 30:45)
 
 
-
 ######################## Pipelines and Stages:
 3 different Pipelines: Graphics, Compute, Raytracing
 
-Each Pipeline has different stages (see Vulkan series 5 20:11)
+Each Pipeline has different stages (see Vulkan series 5 20:11) and commands for these stages.
+
+
+######################## Synchronization:
+
+There are also Synchronization Type Commands:
+vkCmdPipelineBarrier
+vkCmdSetEvents
+vkCmdWaitEvents
+vkCmdBeginRenderPass
+vkCmdEndRenderPass
+
+Synccommands can be used to synchronize between other commands. For example, we could tell the device to wait until a copy of a 
+buffer is finished, to start the fragment shader stage.
+
+Another thing:
+Synchronization is also important for command buffers. If we record 4 commands to a buffer and send it to the gpu, the gpu will
+try to proccess all 4 commands at once. But if f.e. command 1 writes to some image and command 2 needs to see what command 1 has 
+written, command 2 needs to wait until command 1 is finished. 
+This is done using Pipeline Barriers. 
+
+Pipeline Barriers:
+These also recoderded into the command buffer. Pipeline barriers dont only work with the commands that are recorded into the same command buffer,
+but can also guard commands from that were already submitted or are only going to be submitted in the future.
+A pipeline barrier always guard the command before the barrier was submitted, to the command that was submitted after. (Submission order)
+	Execution Barrier: All commands (or precise stage specified) before this barrier need to have finished
+	Memory Barrier: 
+	Also synchronizes access to resources. Can wait on memory to finish be written to from another operation, or memory to be 
+	loaded into the caches.
+	Important see Memory Availability and Visibilty in "Complete Picture"
+	Memory barriers are used to make data "available"
+	
+	
+	
+
+Semaphores (used for synchronization in queues internally):
+Semaphores are used to synchronize whole command batches. So before a whole command batch starts, it might need to wait on a sempaphore.
+In the same sense, after a whole command batch is finished it can signal a Semaphore, that another batch might wait on. Semaphores can wait 
+on batches submitted to other queues then its own.
+Can only be used on the GPU side.
+	Binary Semaphore: MUST be used for presentation queues. (Can only be waited on by one command batch?)
+	Timeline Semaphore: Has an integer that needs to be strictly increasing. These support device-host communication.
+			    Allow for:
+				Host query: CPU can query the value of the integer
+				Host wait: CPU can wait until the value of the integer reaches some value
+				Host signal: CPU can increase the integer
+				Device wait: GPU can wait until the value of the integer reaches some value
+				Device signal: GPU can increase the integer	
+
+Fences (used for synchronization between CPU und GPU):
+Fences serve the same purpose as semaphores that are signaled AFTER the whole command batch is finished being processed. 
+The key difference is that semaphores can only be used by batches and thus by the gpu. Fences can be waited on, on the side of the CPU. 
+(to keep in mind: A fence only signals after the batch is finished AND ALL commands subbmitted before the appropiate batch)
+Can be used on the CPU side.
 
 
 
+Wait Idle Operation (used for synchronization between CPU und GPU):
+Waits until a queue is idle. So the queue does not have ANY work anymore.
+(There is also the option to wait for the entire device to be idle)
+vkQueueWaitIdle(queue)
+vkDeviceWaitIdle(device)
 
+Render Pass Subpass Dependencies:
+Image memory barriers for Render Subpasses, so they can wait until image memory was written appropialty.
 
+Events:
+Commands can be configured to wait only on certain other commands using events.
+F.e.:
+vkCmdSetEvent(X, COLOR_ATTACHMENT_OUTPUT) // Configure event X to signal when the color attachment stage is done
+vkCmdWaitEvents(X, FRAGMENT_SHADER) // Configure Fragment shader stage to wait until event X is finished
+
+To signal events cpu side: vkCmdSetEvent2
+To wait for events on cpu: vkCmdWaitEvents2
+reset from cpu		 : vkCmdResetEvent2
+
+To signal events gpu side : vkSetEvent
+To query for events on gpu: vkGetEventStatus
+reset from gpu		  : vkResetEvent
 
 
 ###################### Complete Picture:
@@ -185,8 +257,13 @@ Statetype commands are used to establish a state and bind resources to commands,
 pass data to action type commands. All of that is recorded into a command buffer and submitted to the according queue on the gpu.
 
 
-
-
+Memory Availability and Visibility:
+Memory has become available when it has been loaded into L2 cache (the cache that is shared between multiple SPs)
+Memory only becomes visible when it has been loaded into the appropiate L1 cache for the SP that processes the stage.
+Visibility always refers to a combination of a pipeline stage and an access mask. 
+For example: Fragment_Shader stage and the Shader_Read access type(/mask).
+It can be that Data has been overwritten in the L1 cache, so the data is still visible but not available anymore, because the L1 cache is invalid.
+If other commands that are scheduled to other core clusters now want to use this data, they need for this memory to be available again (see memory barrier)
 
 
 
