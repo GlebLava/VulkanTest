@@ -131,7 +131,7 @@ of an image. So multiple ImageViews can be created from one image, all used to a
 	Each set contains one or multiple descriptors which are used conjunction.
 - Multiple descriptor sets can be used
 
-- !Important! Descriptor sets are always bound do an Command Buffer
+- !Important! Descriptor sets are always bound to an Command Buffer
 
 
 
@@ -166,6 +166,26 @@ How can data be actually provided to commands?:
 4. Attributes (Graphics pipelines only)
    These are streamed to vertex shaders and are acessible via input location.  
    (see Vulkan series 4 30:45)
+
+
+
+######################## Pipelines and Stages:
+3 different Pipelines: Graphics, Compute, Raytracing
+
+Each Pipeline has different stages (see Vulkan series 5 20:11)
+
+
+
+
+
+
+
+###################### Complete Picture:
+Statetype commands are used to establish a state and bind resources to commands, which are accessed through descriptor sets to configure and
+pass data to action type commands. All of that is recorded into a command buffer and submitted to the according queue on the gpu.
+
+
+
 
 
 

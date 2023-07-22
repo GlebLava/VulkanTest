@@ -131,8 +131,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Engine\VulkanComputeRaytracingEngine.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\main_rewrite.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Engine\VulkanComputeRaytracingEngine.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

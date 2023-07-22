@@ -11,6 +11,8 @@
 #include <stdexcept>
 #include <fstream>
 
+#include "Engine/VulkanComputeRaytracingEngine.h"
+
 static std::vector<char> readFile(const std::string& filename)
 {
 	std::ifstream file(filename, std::ios::ate | std::ios::binary);
@@ -39,8 +41,14 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityF
 	return VK_FALSE;
 }
 
-
 int main()
+{
+	VulkanComputeRaytracingEngine engine;
+
+	return 1;
+}
+
+int main1()
 {
 	/*
 	create a glfw window
