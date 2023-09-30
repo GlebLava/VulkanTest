@@ -131,11 +131,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Engine\ComputePipeline.cpp" />
+    <ClCompile Include="src\Engine\ImageFrame.cpp" />
     <ClCompile Include="src\Engine\VulkanComputeRaytracingEngine.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\main_rewrite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Engine\ComputePipeline.h" />
+    <ClInclude Include="src\Engine\ImageFrame.h" />
     <ClInclude Include="src\Engine\VulkanComputeRaytracingEngine.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

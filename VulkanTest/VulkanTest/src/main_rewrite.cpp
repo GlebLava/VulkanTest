@@ -598,12 +598,8 @@ int main1()
 		vk::Result present;
 		present = presenterQueue.presentKHR(presentInfo);
 
-
-
 		frameNumber = (frameNumber + 1) % vkSwapchainImages.size();
 	}
-
-
 
 	return 1;
 }
