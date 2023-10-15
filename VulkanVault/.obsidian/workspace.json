@@ -6,6 +6,7 @@
       {
         "id": "c6d39db055b13582",
         "type": "tabs",
+        "dimension": 66.6469893742621,
         "children": [
           {
             "id": "2badfaf3e455c597",
@@ -25,10 +26,54 @@
                 "mode": "source",
                 "source": false
               }
-            }
+            },
+            "group": "4ae92010388faf77"
           }
         ],
         "currentTab": 1
+      },
+      {
+        "id": "906ab34acb4535c7",
+        "type": "tabs",
+        "dimension": 33.3530106257379,
+        "children": [
+          {
+            "id": "c466c95a91b0ee98",
+            "type": "leaf",
+            "state": {
+              "type": "localgraph",
+              "state": {
+                "file": "VulkanNotes.md",
+                "options": {
+                  "collapse-filter": true,
+                  "search": "",
+                  "localJumps": 1,
+                  "localBacklinks": true,
+                  "localForelinks": true,
+                  "localInterlinks": false,
+                  "showTags": false,
+                  "showAttachments": false,
+                  "hideUnresolved": false,
+                  "collapse-color-groups": true,
+                  "colorGroups": [],
+                  "collapse-display": true,
+                  "showArrow": false,
+                  "textFadeMultiplier": 0,
+                  "nodeSizeMultiplier": 1,
+                  "lineSizeMultiplier": 1,
+                  "collapse-forces": true,
+                  "centerStrength": 0.518713248970312,
+                  "repelStrength": 10,
+                  "linkStrength": 1,
+                  "linkDistance": 250,
+                  "scale": 1.4019828977761042,
+                  "close": false
+                }
+              }
+            },
+            "group": "4ae92010388faf77"
+          }
+        ]
       }
     ],
     "direction": "vertical"
@@ -78,7 +123,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 271.5
   },
   "right": {
     "id": "fe43c61c3b3690c1",
@@ -155,9 +200,11 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "6b90bbbb5cfa6b1e",
+  "active": "c466c95a91b0ee98",
   "lastOpenFiles": [
+    "Setup.md",
     "VulkanNotes.md",
+    "Images",
     "Images"
   ]
 }
