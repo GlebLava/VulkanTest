@@ -58,8 +58,6 @@ int main1()
 	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 	window = glfwCreateWindow(800, 800, "Vulkan", nullptr, nullptr);
 
-
-
 	/*
 	create vulkan instance
 	I dont really care about validation layers right now

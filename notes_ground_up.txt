@@ -1,0 +1,78 @@
+0. create glfwWindow
+
+1. create vkInstance. 
+	query for extensions and validation layer.
+	create vkInstance with validation and link the debug callback. 
+	(vkValidation picks the console as default output but is configurable via this callback)
+
+2. create logicalDevice.
+	query for queue families and pick a physical device to create a logical device from
+	this logical device is the interface to the gpu.
+
+3. create surface from glfw window
+
+4. create swapchain with a ceratin VkSurfaceFormatKHR. The format specifies the color channels.
+ 	F.e. B8G8R8A8_SRGB means we stor rgba in the order of Blue, Green, Red, Alpha in that order
+	with 8 bits each. 
+	Swapchain also needs a colorSpace. Idk what that means, just choose VK_COLOR_SPACE_SRGB_NONLINEAR_KHR
+	
+	Choose presentation mode for swapchain: Immediate, FIFO, FIFO Relaxed, mailbox
+
+	Choose SwapExtent, which is the resolution of the swap chain images. Most of the time same res as the window.
+	(For details look here under Swap extent https://vulkan-tutorial.com/en/Drawing_a_triangle/Presentation/Swap_chain#page_Choosing-the-right-settings-for-the-swap-chain)
+
+5. create swapchain images (they are actually created at the same time as creating swapchain and need to be retrieved afterwards)
+	image needs to know the format (same format as swapchain creation format) and same color space.
+	also image needs to know the extend (same resolution).
+	imageArrayLayers = 1 and stays one (has special appliances)
+	image needs to know its usage which is VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT.
+	if the graphics queue is a different one from the present queue, the images need to be imgageSharingMode = VK_SHARING_MODE_CONCURRENT, since they will be used by two different queues at the same time
+	if its the same then imageSharingMode = VK_SHARING_MODE_EXCLUSIVE, because then Vulkan does not need to worry, that ownership of the images might be transfered between queues
+
+6. create image views from images. (describes how to access the image for the gpu, literally a view into the image)
+	there is some random stuff to configure. Just follow (https://vulkan-tutorial.com/en/Drawing_a_triangle/Presentation/Image_views)
+	each image view also needs some barriers and fences and stuff
+
+	create framebuffer for each image view (this needs the render Pass to be built, so this needs to be revisited after the next step only)
+	(https://vulkan-tutorial.com/en/Drawing_a_triangle/Drawing/Framebuffers)
+
+	create first semaphore for each imageview, since we dont wait until gpu is done drawing image
+	create second semaphore for each imageview, since we need to know if the image is even available to reset or something like that
+	create fence for each imageview, since we need to wait until the currently submitted frame is finished being presented before we submit the next one	
+
+7. create pipeline (there is a specific graphics pipeline that needs to be configured)
+	1. create vertex and fragment shaders
+	2. define VkPipelineShaderStageCreateInfo with these two shaders
+	3. create dynamic state which handles resizing of window for example, so the whole pipeline does not need to be rebuilt each time window gets resized
+	4. create vertex input stage (describes format of vertex data that will be passed to vertex shader)
+	5. create Input assembly (describes what kind of gemetry gets drawn by the vertices + if primitive restart is enabled, which allows one buffer to send multiple geometries by termanating the last vertex by using a special null character)
+	6. create viewport (region of framebuffer the output is rendered to) in our case literally whole window
+	7. create scissor (not complicated. like cutout, see https://vulkan-tutorial.com/en/Drawing_a_triangle/Graphics_pipeline_basics/Fixed_functions Viewports and scissors)
+	8. create Rasterizer
+	9. configure multisampling
+	10. configure depth testing and stencils
+	11. tell how to blend colors (should alpha be added? or multiplied and shit)
+	12. create pipeline layout which tells the pipeline where uniforms are to use in shaders
+	
+	create render passes for pipeline (https://www.youtube.com/watch?v=x2SGVjlVGhE)
+
+8. create command pool and buffers
+	command pool creation is easy
+	command buffer is created from a command pool. This buffer is used to record commands, which will be sent to the gpu
+
+
+
+9. the loop:
+
+-.record commands into command buffer
+-.submitt command buffer
+-.start the render pass
+-.bind pipeline
+-.end the render pass
+	
+
+
+
+
+	
+	

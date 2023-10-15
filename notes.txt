@@ -281,7 +281,7 @@ INIT:
 	- fence
 	- semaphore for when image is available
  	- semaphore for when image is finished being rendered to screen?
-	- Descriptors, Descriprotsets, WriteDescriptorsets of Image 
+	- Descriptors, Descriptorsets, WriteDescriptorsets of Image 
 6. create the pipeline
 
 

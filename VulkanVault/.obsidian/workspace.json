@@ -1,0 +1,163 @@
+{
+  "main": {
+    "id": "96f1f06bdaedea64",
+    "type": "split",
+    "children": [
+      {
+        "id": "c6d39db055b13582",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2badfaf3e455c597",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {}
+            }
+          },
+          {
+            "id": "6b90bbbb5cfa6b1e",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "VulkanNotes.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "da98cffa9e6f958c",
+    "type": "split",
+    "children": [
+      {
+        "id": "4bb4c50532f95570",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f1d7082567e3a3ec",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "9f4b66f3d5bab8fc",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "9a71b26f4abdc64b",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "fe43c61c3b3690c1",
+    "type": "split",
+    "children": [
+      {
+        "id": "7a5a639bc35999ea",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4ead20b8924fbe52",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "VulkanNotes.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "819a241b0b9e8013",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "VulkanNotes.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "a22c7b1e019e76af",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "58b18c6234782728",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "VulkanNotes.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "6b90bbbb5cfa6b1e",
+  "lastOpenFiles": [
+    "VulkanNotes.md",
+    "Images"
+  ]
+}
